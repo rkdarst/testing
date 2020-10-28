@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Exercise: Automatic testing with GitHub Actions &mdash; Automated testing  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/togglebutton.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Test design" href="../06-test-design/" />
+    <link rel="prev" title="Tools" href="../04-frameworks/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home" alt="Documentation Home"> Automated testing
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01-motivation/">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-concepts/">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-pytest/">Testing locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-frameworks/">Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exercise: Automatic testing with GitHub Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-a-full-cycle-collaborative-workflow">Exercise a full-cycle collaborative workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-create-a-new-repository-on-github">Step 1: Create a new repository on GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-clone-the-repository-add-sources-commit-and-push">Step 2: Clone the repository, add sources, commit, and push</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-enable-github-actions">Step 3: Enable GitHub Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-verify-that-tests-have-been-automatically-run">Step 4: Verify that tests have been automatically run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-add-a-test-which-reveals-a-problem">Step 5: Add a test which reveals a problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-6-open-an-issue-on-github">Step 6: Open an issue on GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-7-fork-and-clone-the-repository-of-your-colleague">Step 7: Fork and clone the repository of your colleague</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-8-fix-the-broken-test">Step 8: Fix the broken test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-9-file-a-pull-request">Step 9: File a pull request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-10-accept-the-pull-request">Step 10: Accept the pull request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-11-discussion">Step 11: Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#where-to-go-from-here">Where to go from here</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../06-test-design/">Test design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-conclusions/">Conclusions and recommendations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Automated testing</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Exercise: Automatic testing with GitHub Actions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/coderefinery/content/blob/master/content/05-gh-actions.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exercise-automatic-testing-with-github-actions">
+<h1>Exercise: Automatic testing with GitHub Actions<a class="headerlink" href="#exercise-automatic-testing-with-github-actions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="exercise-a-full-cycle-collaborative-workflow">
+<h2>Exercise a full-cycle collaborative workflow<a class="headerlink" href="#exercise-a-full-cycle-collaborative-workflow" title="Permalink to this headline">¶</a></h2>
+<p>We will do this exercise in collaborative circle within the group
+(breakout room).</p>
+<p>In this exercise, all make a repository on Github, commit code to the
+repository and set up tests with GitHub Actions.  Everybody find a bug in their repository, make
+an issue in their own repository. The each one  clone one of the other’s repos, fixes the bug, makes a pull
+request, checks the automated tests on Github, and everybody merge their co-workers’s change.</p>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/testing_group_work.png"><img alt="Graph with exercise steps" src="../_images/testing_group_work.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-text">Overview of this exercise. Below we detail the steps.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="step-1-create-a-new-repository-on-github">
+<h3>Step 1: Create a new repository on GitHub<a class="headerlink" href="#step-1-create-a-new-repository-on-github" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Select a <strong>different repository name</strong> than your colleagues (otherwise forking the same name will be strange)</p></li>
+<li><p><strong>Before</strong> you create the repository, select <strong>“Initialize this repository with a README”</strong> (otherwise you try to clone an empty repo).
+It is also possible to add a you a <code class="docutils literal notranslate"><span class="pre">.gitgnore</span></code> covering Python and License if you want to.</p></li>
+<li><p>Write the repository URL in the shared document (HackMD)</p></li>
+</ul>
+</div>
+<div class="section" id="step-2-clone-the-repository-add-sources-commit-and-push">
+<h3>Step 2: Clone the repository, add sources, commit, and push<a class="headerlink" href="#step-2-clone-the-repository-add-sources-commit-and-push" title="Permalink to this headline">¶</a></h3>
+<p>Clone the repository.</p>
+<p>Add a file <code class="docutils literal notranslate"><span class="pre">example.py</span></code> containing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+
+<span class="k">def</span> <span class="nf">test_add</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+    <span class="k">assert</span> <span class="n">add</span><span class="p">(</span><span class="s1">&#39;space&#39;</span><span class="p">,</span> <span class="s1">&#39;ship&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;spaceship&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">subtract</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># &lt;--- fix this in step 8</span>
+
+
+<span class="c1"># uncomment the following test in step 5</span>
+<span class="c1">#def test_subtract():</span>
+<span class="c1">#    assert subtract(2, 3) == -1</span>
+</pre></div>
+</div>
+<p>Test <code class="docutils literal notranslate"><span class="pre">example.py</span></code> with <code class="docutils literal notranslate"><span class="pre">pytest</span></code>.</p>
+<p>Then <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code> the file, commit, and push the changes to GitHub.</p>
+</div>
+<div class="section" id="step-3-enable-github-actions">
+<h3>Step 3: Enable GitHub Actions<a class="headerlink" href="#step-3-enable-github-actions" title="Permalink to this headline">¶</a></h3>
+<p>Select “Actions” from your GitHub repository page. You get at paged with
+title “Get started with GitHub Actions”. Select the button for “Set up
+this workflow” under Python Application:</p>
+<hr class="docutils" />
+<div class="figure align-default">
+<img alt="../_images/python_application.png" src="../_images/python_application.png" />
+</div>
+<hr class="docutils" />
+<p>GitHub creates a subdirectory <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> with at YAML. Add
+<code class="docutils literal notranslate"><span class="pre">example.py</span></code> to the last line with the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> command:</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="c1"># This workflow will install Python dependencies, run tests and lint with a single version of Python</span>
+<span class="c1"># For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions</span>
+
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Python application</span>
+
+<span class="nt">on</span><span class="p">:</span>
+  <span class="nt">push</span><span class="p">:</span>
+    <span class="nt">branches</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">master</span> <span class="p p-Indicator">]</span>
+  <span class="nt">pull_request</span><span class="p">:</span>
+    <span class="nt">branches</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">master</span> <span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+  <span class="nt">build</span><span class="p">:</span>
+
+    <span class="nt">runs-on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+
+    <span class="nt">steps</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Set up Python 3.8</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v2</span>
+      <span class="nt">with</span><span class="p">:</span>
+        <span class="nt">python-version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3.8</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+      <span class="nt">run</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no">python -m pip install --upgrade pip</span>
+        <span class="no">pip install flake8 pytest</span>
+        <span class="no">if [ -f requirements.txt ]; then pip install -r requirements.txt; fi</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint with flake8</span>
+      <span class="nt">run</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no"># stop the build if there are Python syntax errors or undefined names</span>
+        <span class="no">flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics</span>
+        <span class="no"># exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide</span>
+        <span class="no">flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Test with pytest</span>
+      <span class="nt">run</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no">pytest example.py</span>
+</pre></div>
+</div>
+<p>Do the commit by pressing  the “Start Commit” button:</p>
+<div class="figure align-default">
+<img alt="../_images/gh_action_commit.png" src="../_images/gh_action_commit.png" />
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="step-4-verify-that-tests-have-been-automatically-run">
+<h3>Step 4: Verify that tests have been automatically run<a class="headerlink" href="#step-4-verify-that-tests-have-been-automatically-run" title="Permalink to this headline">¶</a></h3>
+<p>Observe in the repository how the test succeed. While the test is
+executed, the repository has yellow marker. This is replaced with a green
+check mark, once the test succeeds:</p>
+<div class="figure align-default">
+<img alt="../_images/green_check_mark.png" src="../_images/green_check_mark.png" />
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="step-5-add-a-test-which-reveals-a-problem">
+<h3>Step 5: Add a test which reveals a problem<a class="headerlink" href="#step-5-add-a-test-which-reveals-a-problem" title="Permalink to this headline">¶</a></h3>
+<p>After you committed the YAML file, your GitHub repository will be ahead of your local cloned repository. Update your local cloned repository by doing a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> or a combined <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>
+and a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">origin/master</span></code>. Next uncomment the code in <code class="docutils literal notranslate"><span class="pre">example.py</span></code> under “step 5”, commit, and push.
+Verify that the test suite now fails, by selecting the yellow mark at
+“Latest commit”:</p>
+<hr class="docutils" />
+<div class="figure align-default">
+<img alt="../_images/test_failed.png" src="../_images/test_failed.png" />
+</div>
+</div>
+<div class="section" id="step-6-open-an-issue-on-github">
+<h3>Step 6: Open an issue on GitHub<a class="headerlink" href="#step-6-open-an-issue-on-github" title="Permalink to this headline">¶</a></h3>
+<p>Open a new issue on the broken test on GitHub.
+The plan is that your colleague will fix the issue.</p>
+</div>
+<div class="section" id="step-7-fork-and-clone-the-repository-of-your-colleague">
+<h3>Step 7: Fork and clone the repository of your colleague<a class="headerlink" href="#step-7-fork-and-clone-the-repository-of-your-colleague" title="Permalink to this headline">¶</a></h3>
+<p>Now you know the drill.</p>
+</div>
+<div class="section" id="step-8-fix-the-broken-test">
+<h3>Step 8: Fix the broken test<a class="headerlink" href="#step-8-fix-the-broken-test" title="Permalink to this headline">¶</a></h3>
+<p>After you have fixed the code,
+commit the following commit message <code class="docutils literal notranslate"><span class="pre">&quot;restore</span> <span class="pre">function</span> <span class="pre">subtract;</span> <span class="pre">fixes</span> <span class="pre">#1&quot;</span></code> (assuming that you try to fix issue number 1).</p>
+<p>Once the pull request is accepted/merged, this will autoclose the issue since GitHub will recognize the “fixes #1” in the commit message, see also
+<a class="reference external" href="https://help.github.com/articles/closing-issues-using-keywords/">closing issues using keywords</a>.</p>
+<p>Then push to your fork.</p>
+</div>
+<div class="section" id="step-9-file-a-pull-request">
+<h3>Step 9: File a pull request<a class="headerlink" href="#step-9-file-a-pull-request" title="Permalink to this headline">¶</a></h3>
+<p>Then before accepting the pull request from your colleague, observe
+how GitHub Actions automatically tested the code.</p>
+</div>
+<div class="section" id="step-10-accept-the-pull-request">
+<h3>Step 10: Accept the pull request<a class="headerlink" href="#step-10-accept-the-pull-request" title="Permalink to this headline">¶</a></h3>
+<p>Observe how accepting the pull request automatically closes the issue (provided
+the commit message contained the correct issue number).</p>
+<p>Discuss whether this is a useful feature. And if it is, why do you think is it useful?</p>
+</div>
+<div class="section" id="step-11-discussion">
+<h3>Step 11: Discussion<a class="headerlink" href="#step-11-discussion" title="Permalink to this headline">¶</a></h3>
+<p>We discuss together about our experiences with this exercise.</p>
+<hr class="docutils" />
+<p>{: .challenge}</p>
+</div>
+</div>
+<div class="section" id="where-to-go-from-here">
+<h2>Where to go from here<a class="headerlink" href="#where-to-go-from-here" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>This example was using Python but you can achieve the same automation for R or Fortran or C/C++ or other languages</p></li>
+<li><p>GitHub Actions has a <a class="reference external" href="https://github.com/marketplace?type=actions">Marketpace</a> which offer wide range of automatic workflows</p></li>
+<li><p>On <a class="reference external" href="https://travis-ci.org">Travis</a> is an alternative service which offer much of the same</p></li>
+<li><p>On GitLab use <a class="reference external" href="https://about.gitlab.com/product/continuous-integration/">GitLab CI</a></p></li>
+<li><p>For Windows builds use <a class="reference external" href="https://www.appveyor.com">Appveyor</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../06-test-design/" class="btn btn-neutral float-right" title="Test design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../04-frameworks/" class="btn btn-neutral float-left" title="Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, CodeRefinery project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

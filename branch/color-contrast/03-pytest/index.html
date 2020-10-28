@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Exercises: Testing with pytest and precommit hooks &mdash; Automated testing  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/togglebutton.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Tools" href="../04-frameworks/" />
+    <link rel="prev" title="Concepts" href="../02-concepts/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home" alt="Documentation Home"> Automated testing
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01-motivation/">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-concepts/">Concepts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exercises: Testing with pytest and precommit hooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#make-sure-the-test-passes">2. Make sure the test passes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialize-a-git-repository">3. Initialize a Git repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#git-add-and-commit-the-file">4. Git add and commit the file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-the-following-shell-script">5. Create the following shell script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#make-pre-commit-executable">6. Make <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> executable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#move-this-file-under-git-hooks">7. Move this file under .git/hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#break-the-code-and-try-to-commit-this-change">8. Break the code and try to commit this change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discuss">9. Discuss</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04-frameworks/">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-gh-actions/">Exercise: Automatic testing with GitHub Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-test-design/">Exercise/discussion: Test design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-conclusions/">Conclusions and recommendations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Automated testing</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Exercises: Testing with pytest and precommit hooks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/coderefinery/content/blob/master/content/03-pytest.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exercises-testing-with-pytest-and-precommit-hooks">
+<h1>Exercises: Testing with pytest and precommit hooks<a class="headerlink" href="#exercises-testing-with-pytest-and-precommit-hooks" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-exercise-pytest-http-doc-pytest-org challenge admonition">
+<p class="admonition-title">Exercise <a class="reference external" href="http://doc.pytest.org">pytest</a></p>
+<p>In this exercise we will make a simple Python function and use
+<a class="reference external" href="http://doc.pytest.org">pytest</a> to test it. We will try to
+keep things simple so that those who do not use Python can follow.</p>
+<p>Create a new directory and change into it:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mkdir pytest-example
+$ <span class="nb">cd</span> pytest-example
+</pre></div>
+</div>
+</div>
+<p>Then create a file called <code class="docutils literal notranslate"><span class="pre">example.py</span></code> and copy-paste the following code into it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+
+<span class="k">def</span> <span class="nf">test_add</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+    <span class="k">assert</span> <span class="n">add</span><span class="p">(</span><span class="s1">&#39;space&#39;</span><span class="p">,</span> <span class="s1">&#39;ship&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;spaceship&#39;</span>
+</pre></div>
+</div>
+<p>This code contains one genuine function and a test function.</p>
+<p>Let us try to test it with pytest:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pytest -v example.py
+
+<span class="o">============================================================</span> <span class="nb">test</span> session <span class="nv">starts</span> <span class="o">=================================</span>
+platform linux -- Python <span class="m">3</span>.7.2, pytest-4.3.1, py-1.8.0, pluggy-0.9.0 -- /home/user/pytest-example/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/user/pytest-example, inifile:
+collected <span class="m">1</span> item
+
+example.py::test_add <span class="nv">PASSED</span>
+
+<span class="o">=========================================================</span> <span class="m">1</span> passed in <span class="m">0</span>.01 <span class="nv">seconds</span> <span class="o">===============================</span>
+</pre></div>
+</div>
+<p>Yay! The test passed!</p>
+<p>Let us break the test!</p>
+<p>Introduce a code change which breaks the code and check
+whether pytest detects the change:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pytest -v example.py
+<span class="o">============================================================</span> <span class="nb">test</span> session <span class="nv">starts</span> <span class="o">=================================</span>
+platform linux -- Python <span class="m">3</span>.7.2, pytest-4.3.1, py-1.8.0, pluggy-0.9.0 -- /home/user/pytest-example/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/user/pytest-example, inifile:
+collected <span class="m">1</span> item
+
+example.py::test_add <span class="nv">FAILED</span>
+
+<span class="o">=================================================================</span> <span class="nv">FAILURES</span> <span class="o">=======================================</span>
+_________________________________________________________________ test_add _______________________________________
+
+    def test_add<span class="o">()</span>:
+&gt;       assert add<span class="o">(</span><span class="m">2</span>, <span class="m">3</span><span class="o">)</span> <span class="o">==</span> <span class="m">5</span>
+E       assert -1 <span class="o">==</span> <span class="m">5</span>
+E         --1
+E         +5
+
+example.py:6: <span class="nv">AssertionError</span>
+<span class="o">=========================================================</span> <span class="m">1</span> failed in <span class="m">0</span>.05 <span class="nv">seconds</span> <span class="o">==============</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+---
+
+## Note to Fortran developers
+
+Personal recommendation:
+
+- Compile the Fortran code to a dynamic library with C interface using `iso_c_binding`
+- Document your API in a C header file
+- Use Python [CFFI](http://cffi.readthedocs.io) to create a Python module from your C header file and dynamic library
+- Test your Fortran code with [pytest](http://doc.pytest.org)
+- Since the library is dynamically linked, you do not need to recompile when designing tests
+- [Example: Implementing context-aware APIs in different languages](https://github.com/dev-cafe/context-api-example)
+
+---
+
+## Git hooks
+
+**Git hooks** are scripts that we can define and which can be run when certain Git
+events happen.  They can, for example, run tests before a commit and
+reject if it fails.
+
+There are **client-side hooks** (run on your own computer when
+committing) and **server-side hooks** (run on server after pushing,
+usually used to test if merging is okay).
+
+---
+
+```{challenge} Exercise using a `pre-commit` hook:
+
+
+Here we will use our previous `example.py` and add a git client-side hook the `pre-commit` hook to run a script before a
+commit is recorded.
+
+
+### 1. The starting point is our `example.py` file
+
+We are still in the directory `pytest-example` which
+contains `example.py`:
+
+```python
+def add(a, b):
+    return a + b
+
+
+def test_add():
+    assert add(2, 3) == 5
+    assert add(&#39;space&#39;, &#39;ship&#39;) == &#39;spaceship&#39;
+</pre></div>
+</div>
+<div class="section" id="make-sure-the-test-passes">
+<h2>2. Make sure the test passes<a class="headerlink" href="#make-sure-the-test-passes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pytest example.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialize-a-git-repository">
+<h2>3. Initialize a Git repository<a class="headerlink" href="#initialize-a-git-repository" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git init
+</pre></div>
+</div>
+</div>
+<div class="section" id="git-add-and-commit-the-file">
+<h2>4. Git add and commit the file<a class="headerlink" href="#git-add-and-commit-the-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git add example.py
+$ git commit
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-following-shell-script">
+<h2>5. Create the following shell script<a class="headerlink" href="#create-the-following-shell-script" title="Permalink to this headline">¶</a></h2>
+<p>Save this file as <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+pytest example.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="make-pre-commit-executable">
+<h2>6. Make <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> executable<a class="headerlink" href="#make-pre-commit-executable" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ chmod +x pre-commit
+</pre></div>
+</div>
+</div>
+<div class="section" id="move-this-file-under-git-hooks">
+<h2>7. Move this file under .git/hooks<a class="headerlink" href="#move-this-file-under-git-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mv pre-commit .git/hooks
+</pre></div>
+</div>
+</div>
+<div class="section" id="break-the-code-and-try-to-commit-this-change">
+<h2>8. Break the code and try to commit this change<a class="headerlink" href="#break-the-code-and-try-to-commit-this-change" title="Permalink to this headline">¶</a></h2>
+<p>Now the <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> should reject the commit.</p>
+</div>
+<div class="section" id="discuss">
+<h2>9. Discuss<a class="headerlink" href="#discuss" title="Permalink to this headline">¶</a></h2>
+<p>Discuss this approach: pros and cons.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../04-frameworks/" class="btn btn-neutral float-right" title="Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../02-concepts/" class="btn btn-neutral float-left" title="Concepts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, CodeRefinery project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
